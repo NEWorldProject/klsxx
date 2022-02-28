@@ -1,0 +1,12 @@
+[submodule "Essential"]
+	path = Essential
+	url = https://github.com/NEWorldProject/klsxx.essential.git
+[submodule "Thread"]
+	path = Thread
+	url = https://github.com/NEWorldProject/klsxx.thread.git
+[submodule "Coroutine"]
+	path = Coroutine
+	url = https://github.com/NEWorldProject/klsxx.coroutine.git
+[submodule "IO"]
+	path = IO
+	url = https://github.com/NEWorldProject/klsxx.io.git
