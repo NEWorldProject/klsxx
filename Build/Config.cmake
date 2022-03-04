@@ -5,10 +5,10 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
     set(CMAKE_CXX_STANDARD 20)
 
     # Force the use of UTF-8 charset on windows platforms.    
-    if (MSVC)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /source-charset:utf-8")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
-    endif()
+    #if (MSVC)
+    #    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /source-charset:utf-8")
+    #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
+    #endif()
 
     # Link the atomic library on GNU C platforms
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -42,5 +42,6 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
         FetchContent_MakeAvailable(googletest)
         set(KLS_BUILD_TESTS TRUE)
+        enable_testing()
     endif()
 endif()

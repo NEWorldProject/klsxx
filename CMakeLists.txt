@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
 project(KLSXX)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build)
 include(${CMAKE_CURRENT_SOURCE_DIR}/Build/Config.cmake)
 message("Configuring KLSXX on ${CMAKE_SYSTEM_NAME}/${CMAKE_SYSTEM_VERSION}")
 

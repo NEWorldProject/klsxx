@@ -13,3 +13,7 @@ _deps
 # VS CMake Browse DB and build location
 .vs
 out
+
+# CLion Browse DB and build location
+.idea
+cmake-build-*
