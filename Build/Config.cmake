@@ -26,17 +26,36 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
         message(STATUS "IPO IS NOT SUPPORTED: ${_KLS_IPO_SUPPORT_MESSAGE}, DISABLED")
     endif()
 
-    function(target_enable_ipo NAME)
+    function(kls_target_enable_ipo NAME)
         if (KLS_IPO_SUPPORT)
             set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION $<$<CONFIG:Debug>:FALSE>:TRUE)
         endif ()
     endfunction()
 
+    function(kls_add_library_module NAME ALIAS)
+        add_library(${NAME} STATIC)
+        kls_target_enable_ipo(${NAME})
+        add_library(${ALIAS} ALIAS ${NAME})
+    endfunction()
+
+    function(kls_public_source_directory TARGET DIRECTORY)
+        file(GLOB_RECURSE SRC_PUB ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/*.*)
+        target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY})
+        target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY})
+        target_sources(${TARGET} PUBLIC ${SRC_PUB})
+    endfunction()
+
+    function(kls_module_source_directory TARGET DIRECTORY)
+        file(GLOB_RECURSE SRC_MOD ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/*.*)
+        target_include_directories(${TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY})
+        target_sources(${TARGET} PRIVATE ${SRC_MOD})
+    endfunction()
+
     if (NOT DEFINED KLS_DISABLE_TEST)
         include(FetchContent)
         FetchContent_Declare(
-            googletest
-            URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+                googletest
+                URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
         )
         # For Windows: Prevent overriding the parent project's compiler/linker settings
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -44,4 +63,15 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
         set(KLS_BUILD_TESTS TRUE)
         enable_testing()
     endif()
+
+    function(kls_define_tests TEST_NAME TEST_TARGET TEST_SOURCE_DIR)
+        if (KLS_BUILD_TESTS)
+            file(GLOB_RECURSE SRC_TEST ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE_DIR}/*.*)
+            add_executable(${TEST_NAME} ${SRC_TEST})
+            kls_target_enable_ipo(${TEST_NAME})
+            target_link_libraries(${TEST_NAME} GTest::gtest_main ${TEST_TARGET})
+            include(GoogleTest)
+            gtest_discover_tests(${TEST_NAME})
+        endif()
+    endfunction()
 endif()
