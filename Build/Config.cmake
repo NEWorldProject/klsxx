@@ -4,11 +4,11 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
     # Setup Language
     set(CMAKE_CXX_STANDARD 20)
 
-    # Force the use of UTF-8 charset on windows platforms.    
-    #if (MSVC)
+    if (MSVC)
+    #    Force the use of UTF-8 charset on windows platforms.
     #    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /source-charset:utf-8")
     #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
-    #endif()
+    endif()
 
     # Link the atomic library on GNU C platforms
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -26,15 +26,19 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
         message(STATUS "IPO IS NOT SUPPORTED: ${_KLS_IPO_SUPPORT_MESSAGE}, DISABLED")
     endif()
 
-    function(kls_target_enable_ipo NAME)
+    function(kls_target NAME)
         if (KLS_IPO_SUPPORT)
             set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION $<$<CONFIG:Debug>:FALSE>:TRUE)
         endif ()
+        if (MSVC)
+            target_compile_definitions(${NAME} PRIVATE __cpp_lib_coroutine)
+            target_compile_options(${NAME} PRIVATE "/wd4005;")
+        endif()
     endfunction()
 
     function(kls_add_library_module NAME ALIAS)
         add_library(${NAME} STATIC)
-        kls_target_enable_ipo(${NAME})
+        kls_target(${NAME})
         add_library(${ALIAS} ALIAS ${NAME})
     endfunction()
 
@@ -68,7 +72,7 @@ if (NOT DEFINED KLS_PROJECT_DEFINE)
         if (KLS_BUILD_TESTS)
             file(GLOB_RECURSE SRC_TEST ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE_DIR}/*.*)
             add_executable(${TEST_NAME} ${SRC_TEST})
-            kls_target_enable_ipo(${TEST_NAME})
+            kls_target(${TEST_NAME})
             target_link_libraries(${TEST_NAME} GTest::gtest_main ${TEST_TARGET})
             include(GoogleTest)
             gtest_discover_tests(${TEST_NAME})
