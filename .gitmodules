@@ -10,3 +10,6 @@
 [submodule "IO"]
 	path = IO
 	url = https://github.com/NEWorldProject/klsxx.io.git
+[submodule "PHTTP"]
+	path = PHTTP
+	url = https://github.com/NEWorldProject/phttp
