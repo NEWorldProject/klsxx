@@ -4,4 +4,4 @@ include(Build/Config.cmake)
 project(KLSXX)
 
 kls_configure()
-kls_define_modules(Essential Thread Coroutine IO PHTTP)
+kls_define_modules(Essential Thread Coroutine IO PHTTP Journal)
