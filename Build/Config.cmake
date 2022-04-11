@@ -1,5 +1,6 @@
 if (NOT DEFINED KLS_GLOBAL_DEFINE)
     set(KLS_GLOBAL_DEFINE TRUE)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR})
 
     macro(_kls_vcpkg_enable)
         #if (DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -59,7 +60,6 @@ macro(kls_configure)
         else ()
             set(CMAKE_CXX_STANDARD 20) # /std:c++latest for msvc and -std=c++20 for everyone else.
         endif ()
-        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/Build)
         message("Configuring KLSXX on ${CMAKE_SYSTEM_NAME}/${CMAKE_SYSTEM_VERSION}")
 
         if (MSVC)
@@ -97,9 +97,9 @@ macro(kls_configure)
             if (KLS_IPO_SUPPORT)
                 set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION $<$<CONFIG:Debug>:FALSE>:TRUE)
             endif ()
-            if (MSVC)
-                target_compile_definitions(${NAME} PRIVATE __cpp_lib_coroutine)
-                target_compile_options(${NAME} PRIVATE "/wd4005;")
+            if (MSVC AND IDE_INSPECTION_DEFUNCT)
+                target_compile_definitions(${NAME} PRIVATE __cpp_lib_coroutine __cpp_aligned_new)
+                target_compile_options(${NAME} PRIVATE /wd4005 /wd4117)
             endif ()
         endfunction()
 
