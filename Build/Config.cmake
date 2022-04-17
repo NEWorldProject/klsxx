@@ -103,6 +103,11 @@ macro(kls_configure)
             endif ()
         endfunction()
 
+        function(kls_add_executable_module NAME)
+            add_executable(${NAME})
+            kls_target(${NAME})
+        endfunction()
+
         function(kls_add_library_module NAME ALIAS)
             add_library(${NAME} STATIC)
             kls_target(${NAME})
