@@ -114,6 +114,12 @@ macro(kls_configure)
             add_library(${ALIAS} ALIAS ${NAME})
         endfunction()
 
+        function(kls_add_loadable_module NAME ALIAS)
+            add_library(${NAME} SHARED)
+            kls_target(${NAME})
+            add_library(${ALIAS} ALIAS ${NAME})
+        endfunction()
+
         function(kls_vcpkg_package NAME)
             if (KLS_VCPKG_ENABLE)
                 set(_KLS_VCPKG_PKG_TARGET ${NAME}:${VCPKG_TARGET_TRIPLET})
