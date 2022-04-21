@@ -63,9 +63,9 @@ macro(kls_configure)
         message("Configuring KLSXX on ${CMAKE_SYSTEM_NAME}/${CMAKE_SYSTEM_VERSION}")
 
         if (MSVC)
-            #    Force the use of UTF-8 charset on windows platforms.
-            #    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /source-charset:utf-8")
-            #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
+            # Force the use of UTF-8 charset on windows platforms.
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /source-charset:utf-8")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
         endif ()
 
         # Link the atomic library on GNU C platforms
