@@ -10,12 +10,3 @@
 [submodule "IO"]
 	path = IO
 	url = https://github.com/NEWorldProject/klsxx.io.git
-[submodule "PHTTP"]
-	path = PHTTP
-	url = https://github.com/NEWorldProject/phttp
-[submodule "CoThread"]
-	path = CoThread
-	url = https://github.com/NEWorldProject/klsxx.cothread
-[submodule "Journal"]
-	path = Journal
-	url = https://github.com/NEWorldProject/klsxx.journal
